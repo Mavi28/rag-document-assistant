@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from langchain_community.document_loaders import UnstructuredPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
@@ -26,7 +26,7 @@ def get_vectordb():
     )
 
 def process_document_to_chroma_db(file_path, file_name):
-    loader = UnstructuredPDFLoader(file_path)
+    loader = PyPDFLoader(file_path)
     documents = loader.load()
 
     # Add filename as metadata
@@ -41,7 +41,6 @@ def process_document_to_chroma_db(file_path, file_name):
 
     vectordb = get_vectordb()
     vectordb.add_documents(chunks)
-    vectordb.persist()
 
 def answer_question(user_question):
     vectordb = get_vectordb()
